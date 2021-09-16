@@ -43,7 +43,10 @@ def parseFlight(where,today):
     flightPrice = (flightJSON["pricedItinerary"][0]["pricingInfo"]["totalFare"])
 
     flightNoIndex = flightInfo.find(flightAirline)
-    flightNo = flightAirline + " " + flightInfo[flightNoIndex+2:flightNoIndex +6]
+    if (flightInfo[flightNoIndex+6] == "-"):
+        flightNo = flightAirline + " " + flightInfo[flightNoIndex+2:flightNoIndex +5]
+    else:
+        flightNo = flightAirline + " " + flightInfo[flightNoIndex+2:flightNoIndex +6]
 
     print("Flight Number " + flightNo)
     print( math.floor(flightPrice))
