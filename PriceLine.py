@@ -5,7 +5,7 @@ from datetime import datetime
 #https://rapidapi.com/tipsters/api/priceline-com-provider/
 def pushData(today,dest,depAirline,depFlightNo,retAirline,fare):
     try:
-        con_string = r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\brend\Documents\Flights.accdb;'
+        con_string = r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\(directory to database);'
         conn = pyodbc.connect(con_string)
         print("Connected To Database")
         now = datetime.now()
