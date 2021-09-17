@@ -6,10 +6,10 @@ from datetime import datetime
 #https://rapidapi.com/tipsters/api/priceline-com-provider/
 #Register account through rapidapi
 
-Flights = ["JFK","BOS","DFW"] #Airports 
+Flights = ["JFK","BOS","DFW"] #Airports
 Key = "key"
 DataDir = r'directory'
-
+StartAirport = "MSP"
 def connectDB():
     con_string = r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ='+ DataDir +';'
     conn = pyodbc.connect(con_string)
@@ -22,7 +22,7 @@ def pushDB(conn,today,dest,depAirline,depFlightNo,retAirline,fare):
     now = datetime.now()
     time = datetime(1899, 12, 30, now.hour, now.minute)
     sql="""Insert into Flights ([Date],[time],[start],[dest],[depAirline],[depFlightNo],[retAirline],[fare]) values (?,?,?,?,?,?,?,?)"""
-    conn.execute(sql,(today,time,'msp',dest,depAirline,depFlightNo,retAirline,fare))
+    conn.execute(sql,(today,time,StartAirport,dest,depAirline,depFlightNo,retAirline,fare))
 def flight(where):
     try:
         conn = http.client.HTTPSConnection("priceline-com-provider.p.rapidapi.com")
@@ -30,7 +30,7 @@ def flight(where):
             'x-rapidapi-host': "priceline-com-provider.p.rapidapi.com",
             'x-rapidapi-key': Key
             }
-        conn.request("GET", "/v1/flights/search?class_type=ECO&location_departure=MSP&itinerary_type=ROUND_TRIP&location_arrival="+where+"&date_departure=2021-11-16&sort_order=PRICE&number_of_passengers=1&date_departure_return=2021-11-22&price_max=20000&duration_max=2051&price_min=100", headers=headers)
+        conn.request("GET", "/v1/flights/search?class_type=ECO&location_departure="+StartAirport+"&itinerary_type=ROUND_TRIP&location_arrival="+where+"&date_departure=2021-11-16&sort_order=PRICE&number_of_passengers=1&date_departure_return=2021-11-22&price_max=20000&duration_max=2051&price_min=100", headers=headers)
         res = conn.getresponse()
         data = res.read()
         return data.decode("utf-8")
